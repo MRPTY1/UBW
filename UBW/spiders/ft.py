@@ -18,28 +18,29 @@ class FtSpider(scrapy.Spider):
         },
         'DEFAULT_REQUEST_HEADERS': {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,'
-                      '*/*;q=0.8,application/signed-exchange;v=b3;q=0.9 '
+                      '*/*;q=0.8,application/signed-exchange;v=b3;q=0.9 ',
+            'cookie': '17a7a7fab65b13dae9c8b417746c098d=ee77a70ceef880202d1f20c727b1d9d4; '
+                       'uniqueVisitorId=3cd0bb49-cbaa-d395-6113-4ebcf8bec8b9; paywall_source=; '
+                       '_ga_PDY0XG13PH=GS1.1.1612159768.1.0.1612159768.0; _ga=GA1.1.366663392.1612159769; '
+                       '__cfduid=dc1aeb4cad45e6212667bf7b6c5c589511612231077; '
+                       'USER_ID=36cbe5e8-01be-423d-a48b-2255ac5b21b0; '
+                       'USER_ID_FT=36cbe5e8-01be-423d-a48b-2255ac5b21b0; USER_NAME=Wz6JOw; USER_NAME_FT=Wz6JOw; '
+                       'USER_KV=ver|202102;sex|101;cs|0;csp|1;hi|0;in|0;wf|0; paywall=standard; '
+                       'paywall_expire=1629302400; '
+                       'ft=FjDwFkGtm2RZo4KsjzUIjvAYtnk7AGRBdxVtK+L'
+                       '/gKjAOXsxbxcBZrOnByAwBDTZsyfMSS7z42EFbUBNfrinVAtjGOk9mhgD/a0A7bABYLl0nvYjbSwbfq7bg/WTW1sWhdN'
+                       '/3qBjcallxNRY+KFpqsSYpTdpCEICJ7nWqt1eI9hFCR91V/huhLCG3ewj2sJo; FTSTAT_ok_times=7; '
+                       'paywall_expire=1629302400; paywall=standard '
+
         },
         'REDIS_HOST': '127.0.0.1',
         'REDIS_PORT': '6379',
         'SCHEDULER': 'scrapy_redis.scheduler.Scheduler',
         'DUPEFILTER_CLASS': 'scrapy_redis.dupefilter.RFPDupeFilter',
         'SCHEDULER_PERSIST': True,
-        'SCHEDULER_QUEUE_CLASS': 'scrapy_redis.queue.PriorityQueue',
     }
 
     def parse(self, response: HtmlResponse, **kwargs):
-        url = 'https://www.ftchinese.com/users/login'
-        headers = {'content-type': 'application/x-www-form-urlencoded'}
-        data = {
-            'username': 'wangweirong@cloudtranslation.com',
-            'password': 'yunyi666',
-            'saveme': '1'
-        }
-        data = parse.urlencode(data)
-        yield response.follow(url=url, method='post', headers=headers, body=data, callback=self.get_columns)
-
-    def get_columns(self, response: HtmlResponse):
         columns = {
             "/channel/china.html": "中国",
             "/channel/chinareport.html": "政经",
