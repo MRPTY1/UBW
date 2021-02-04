@@ -8,7 +8,7 @@
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 BOT_NAME = 'UBW'
-LOG_LEVEL = 'INFO'
+LOG_LEVEL = 'DEBUG'
 SPIDER_MODULES = ['UBW.spiders']
 NEWSPIDER_MODULE = 'UBW.spiders'
 

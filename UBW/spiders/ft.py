@@ -129,13 +129,13 @@ class FtSpider(scrapy.Spider):
     def get_news_list(self, response: HtmlResponse):
         html = etree.HTML(response.text)
         meta = response.meta
-        news_list = [href for href in html.xpath("//div[@class='item-inner']/a/@href") if 'premium' in href]
+        news_list = [href for href in html.xpath("//div[@class='item-inner']/a/@href")]
         for news in news_list:
             re_news = re.search(r"\d+", news)
             if re_news:
                 yield response.follow(url=f"{self.start_urls[0]}/story/{re_news.group(0)}/ce?archive",
-                                      callback=self.get_news, meta=meta)
-        if len(news_list):
+                                      callback=self.get_news, meta=meta, priority=10)
+        if len(news_list) > 0:
             meta['page'] = meta['page'] + 1
             split = parse.urlsplit(response.url)
             if 'tag' in split.path:
@@ -161,6 +161,8 @@ class FtSpider(scrapy.Spider):
         html = etree.HTML(text)
         left = [p for p in html.xpath('//div[@class="leftp"]/p/text()')]
         right = [p for p in html.xpath('//div[@class="rightp"]/p/text()')]
+        if len(left) == 0 or len(right) == 0:
+            return None
         check.extend(list(zip(left, right)))
         item = {
             'url': response.url,
