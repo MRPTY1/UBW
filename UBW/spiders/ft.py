@@ -3,6 +3,7 @@ import re
 from scrapy.http.response.html import HtmlResponse
 from lxml import etree
 from urllib import parse
+import time
 
 
 class FtSpider(scrapy.Spider):
@@ -131,9 +132,9 @@ class FtSpider(scrapy.Spider):
         meta = response.meta
         news_list = [href for href in html.xpath("//div[@class='item-inner']/a/@href")]
         for news in news_list:
-            re_news = re.search(r"\d+", news)
+            re_news = re.search(r".*\d+", news)
             if re_news:
-                yield response.follow(url=f"{self.start_urls[0]}/story/{re_news.group(0)}/ce?archive",
+                yield response.follow(url=f"https://www.ftchinese.com{re_news.group(0)}/ce?archive",
                                       callback=self.get_news, meta=meta, priority=10)
         if len(news_list) > 0:
             meta['page'] = meta['page'] + 1
@@ -162,11 +163,12 @@ class FtSpider(scrapy.Spider):
         left = [p for p in html.xpath('//div[@class="leftp"]/p/text()')]
         right = [p for p in html.xpath('//div[@class="rightp"]/p/text()')]
         if len(left) == 0 or len(right) == 0:
-            return None
+            pass
         check.extend(list(zip(left, right)))
         item = {
             'url': response.url,
+            'date': int(time.time()*1000),
             'column': response.meta['column_cn'],
-            'check': check
+            'text': response.text
         }
         return item
