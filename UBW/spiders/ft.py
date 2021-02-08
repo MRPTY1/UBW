@@ -7,7 +7,7 @@ import time
 
 
 class FtSpider(scrapy.Spider):
-    name = 'ft'
+    name = 'www.ftchinese.com'.replace('.', '_')
     start_urls = ['https://www.ftchinese.com']
     custom_settings = {
         'CONCURRENT_REQUESTS': 16,
@@ -167,7 +167,7 @@ class FtSpider(scrapy.Spider):
         check.extend(list(zip(left, right)))
         item = {
             'url': response.url,
-            'date': int(time.time()*1000),
+            'date': int(time.time() * 1000),
             'column': response.meta['column_cn'],
             'text': response.text
         }
