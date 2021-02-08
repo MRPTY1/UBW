@@ -7,11 +7,6 @@ class V2rayNMiddleware:
         request.meta['proxy'] = 'https://127.0.0.1:10809'
 
 
-class OfficeMiddleware:
-
-    def process_request(self, request, spider):
-        request.meta['proxy'] = 'https://127.0.0.1:10800'
-
 class ProxiesMiddleware:
 
     def process_request(self, request, spider):
