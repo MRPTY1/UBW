@@ -163,12 +163,12 @@ class FtSpider(scrapy.Spider):
         left = [p for p in html.xpath('//div[@class="leftp"]/p/text()')]
         right = [p for p in html.xpath('//div[@class="rightp"]/p/text()')]
         if len(left) == 0 or len(right) == 0:
-            pass
+            return None
         check.extend(list(zip(left, right)))
         item = {
             'url': response.url,
             'date': int(time.time() * 1000),
             'column': response.meta['column_cn'],
-            'text': response.text
+            'text': check
         }
         return item
