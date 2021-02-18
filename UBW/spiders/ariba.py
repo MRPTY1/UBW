@@ -12,7 +12,7 @@ class AribaSpider(scrapy.Spider):
         'ITEM_PIPELINES': {
             'UBW.pipelines.WarcWriterPipeline': 300,
         },
-        'COOKIES_ENABLED': True,
+        'COOKIES_ENABLED': False,
         'DEFAULT_REQUEST_HEADERS': {
             'Cookie': 'session_api_session=hJYxyCzUKGFAUaTLpln1bQn3Rlr_DfIeY6edxhsOn_I; '
                       'AMCV_B68602BE5330943C0A490D4C@AdobeOrg=-1124106680|MCIDTS|18677|MCMID'
