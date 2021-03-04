@@ -1,13 +1,14 @@
 import scrapy
 from scrapy.http.response.html import HtmlResponse
 from lxml import etree
+import re
 
 
 class ChinadailySpider(scrapy.Spider):
     name = 'language.chinadaily.com.cn'.replace('.', '_')
     start_urls = ['http://language.chinadaily.com.cn/']
     custom_settings = {
-        'CONCURRENT_REQUESTS': 8,
+        'CONCURRENT_REQUESTS': 16,
         'ITEM_PIPELINES': {
             'UBW.pipelines.MongoPipeline': 300,
         },
@@ -15,9 +16,18 @@ class ChinadailySpider(scrapy.Spider):
     }
 
     def parse(self, response: HtmlResponse, **kwargs):
-        for i in range(1, 138):
-            url = f'https://language.chinadaily.com.cn/news_bilingual/page_{i}.html'
-            yield response.follow(url=url, callback=self.get_list)
+        columns = ['news_bilingual', 'news_hotwords', 'trans_collect', 'trans_experience']
+        for column in columns:
+            url = f'https://language.chinadaily.com.cn/{column}/'
+            yield response.follow(url=url, callback=self.get_max_list)
+
+    def get_max_list(self, response: HtmlResponse):
+        html = etree.HTML(response.text)
+        for href in html.xpath("//div[@id='div_currpage']/a[last()]/@href"):
+            re_page = re.search(r'(?<=page_)\d+', href)
+            if not (re_page is None):
+                for page in range(1, int(re_page.group(0)) + 1):
+                    yield response.follow(url=response.url + f'page_{page}.html', callback=self.get_list)
 
     def get_list(self, response: HtmlResponse):
         html = etree.HTML(response.text)
