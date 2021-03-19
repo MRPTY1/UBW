@@ -27,7 +27,7 @@ class CnkeywordsSpider(scrapy.Spider):
 
     def parse(self, response: HtmlResponse, **kwargs):
         url = 'https://www.cnkeywords.net/search?content='
-        text = requests.get('http://192.168.99.18/zh_cn').text
+        text = requests.get('http://192.168.99.18/en_50k.lang').text
         for key in text.split('\n'):
             if len(key):
                 yield response.follow(url=url + key, callback=self.get_list)

@@ -1,4 +1,4 @@
 from scrapy.cmdline import execute
 
 if __name__ == '__main__':
-    execute(['scrapy', 'crawl', 'www.cnkeywords.net'.replace('.', '_')])
+    execute(['scrapy', 'crawl', 'chinesepod.com'.replace('.', '_')])
