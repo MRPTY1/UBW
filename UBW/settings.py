@@ -41,7 +41,7 @@ DEFAULT_REQUEST_HEADERS = {
     'accept-encoding': 'gzip, deflate, br',
     'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7,zh-TW;q=0.6,ja;q=0.5',
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                  'Chrome/87.0.4280.88 Safari/537.36 '
+                  'Chrome/89.0.4389.90 Safari/537.36 '
 }
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
