@@ -11,11 +11,10 @@ class MydictSpider(scrapy.Spider):
     custom_settings = {
         'LOG_LEVEL': 'DEBUG',
         'REDIRECT_ENABLED': False,
-        'DOWNLOAD_DELAY': 3,
         'DOWNLOADER_MIDDLEWARES': {
-            'UBW.middlewares.ProxiesMiddleware': 543
+            'UBW.middlewares.ProxiesPoolMiddleware': 543
         },
-        'CONCURRENT_REQUESTS': 1,
+        'CONCURRENT_REQUESTS': 8,
         'ITEM_PIPELINES': {
             'UBW.pipelines.KVPipeline': 300,
         },
