@@ -1,13 +1,13 @@
 import scrapy
-from lxml import etree
-import requests
 from scrapy.http.response.html import HtmlResponse
+from lxml import etree
 import re
+import requests
 
 
-class MydictSpider(scrapy.Spider):
-    name = 'www.mydict.uk'.replace('.', '_')
-    start_urls = ['https://www.mydict.uk']
+class LexicoSpider(scrapy.Spider):
+    name = 'www.lexico.com'.replace('.', '_')
+    start_urls = ['https://www.lexico.com/']
     custom_settings = {
         'CONCURRENT_REQUESTS': 2,
         'DOWNLOADER_MIDDLEWARES': {
@@ -30,17 +30,13 @@ class MydictSpider(scrapy.Spider):
         text = re.sub(r' \d+', '', text)
         word_list = text.split('\n')
         for word in word_list:
-            url1 = f'https://www.mydict.uk/Dictionary/English-Chinese/{word}'
-            url2 = f'https://www.mydict.uk/Dictionary/English-German/{word}'
-            yield response.follow(url=url1, callback=self.get_word)
-            yield response.follow(url=url2, callback=self.get_word)
+            url = f'https://www.lexico.com/en-es/translate/{word}?s=t'
+            yield response.follow(url=url, callback=self.get_word)
 
     def get_word(self, response: HtmlResponse):
         text = response.text
         html = etree.HTML(text)
-        key_list = [re.sub(r'[\r\n\t]| {2,}', '', key.xpath('string(.)')) for key in
-                    html.xpath('//div[@class="wiki"]/div[4]//li/div[2]')]
-        val_list = [re.sub(r'[\r\n\t]| {2,}', '', key.xpath('string(.)')) for key in
-                    html.xpath('//div[@class="wiki"]/div[4]//li/div[1]')]
-        for kv in zip(key_list, val_list):
-            yield {'url': response.url, 'key': kv[0], 'val': kv[1]}
+        for div in html.xpath('//div[@class="ex"]'):
+            word_list = [em for em in div.xpath('em/text()')]
+            if len(word_list) == 2:
+                yield {'url': response.url, 'key': word_list[0], 'val': word_list[1]}

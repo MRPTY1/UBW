@@ -53,10 +53,10 @@ class PauseMiddleware(RetryMiddleware):
         return cls(crawler)
 
     def process_response(self, request, response, spider):
-        if response.status == 500:
+        if response.status in [500, 429]:
             self.crawler.engine.pause()
             self.logger.debug('引擎暂停')
-            time.sleep(60)
+            time.sleep(300)
             self.logger.debug('引擎重启')
             self.crawler.engine.unpause()
             return request
