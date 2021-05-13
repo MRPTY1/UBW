@@ -9,9 +9,9 @@ class WordreferenceSpider(scrapy.Spider):
     name = 'www.wordreference.com'.replace('.', '_')
     start_urls = ['https://www.wordreference.com/']
     custom_settings = {
-        'CONCURRENT_REQUESTS': 16,
+        'CONCURRENT_REQUESTS': 1,
         'DOWNLOADER_MIDDLEWARES': {
-            'UBW.middlewares.RandomProxiesMiddleware': 554,
+            # 'UBW.middlewares.SeleniumMiddleware': 544,
         },
         'ITEM_PIPELINES': {
             'UBW.pipelines.MongoPipeline': 300,
@@ -20,6 +20,7 @@ class WordreferenceSpider(scrapy.Spider):
     }
 
     def parse(self, response: HtmlResponse, **kwargs):
+        print(response.text)
         es_res = requests.get('http://159.75.19.163/FrequencyWords/es/es_50k.txt')
         en_res = requests.get('http://159.75.19.163/FrequencyWords/en/en_50k.txt')
         es_text = re.sub(r' \d+', '', str(es_res.text.encode('iso8859'), encoding='utf-8'))
@@ -36,6 +37,7 @@ class WordreferenceSpider(scrapy.Spider):
 
     def get_word(self, response: HtmlResponse):
         text = response.text
+        print(text)
         html = etree.HTML(text)
         key_list, val_list = [], []
         for key in html.xpath('//td[@class="FrEx"]'):
@@ -43,4 +45,4 @@ class WordreferenceSpider(scrapy.Spider):
             if len(val):
                 key_list.append(key.xpath('string(.)'))
                 val_list.append(val[0].xpath('string(.)'))
-        yield {'url': response.url, 'word': list(zip(key_list, val_list)), 'lang': response.meta['lang']}
+        # yield {'url': response.url, 'word': list(zip(key_list, val_list)), 'lang': response.meta['lang']}
