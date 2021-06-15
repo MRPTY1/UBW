@@ -8,10 +8,10 @@ from selenium.webdriver.chrome.options import Options
 import scrapy
 
 
-class V2rayNMiddleware:
+class VPNMiddleware:
 
     def process_request(self, request, spider):
-        request.meta['proxy'] = 'https://127.0.0.1:10809'
+        request.meta['proxy'] = 'https://192.168.99.13:7890'
 
 
 class ProxiesMiddleware:

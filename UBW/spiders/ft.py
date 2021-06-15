@@ -12,7 +12,7 @@ class FtSpider(scrapy.Spider):
     custom_settings = {
         'CONCURRENT_REQUESTS': 16,
         'DOWNLOADER_MIDDLEWARES': {
-            'UBW.middlewares.V2rayNMiddleware': 543
+            'UBW.middlewares.VPNMiddleware': 543
         },
         'ITEM_PIPELINES': {
             'UBW.pipelines.MongoPipeline': 300,

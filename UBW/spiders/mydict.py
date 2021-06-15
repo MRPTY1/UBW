@@ -11,7 +11,7 @@ class MydictSpider(scrapy.Spider):
     custom_settings = {
         'CONCURRENT_REQUESTS': 2,
         'DOWNLOADER_MIDDLEWARES': {
-            'UBW.middlewares.V2rayNMiddleware': 543,
+            'UBW.middlewares.VPNMiddleware': 543,
             'UBW.middlewares.PauseMiddleware': 600,
         },
         'ITEM_PIPELINES': {

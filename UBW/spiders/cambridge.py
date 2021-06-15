@@ -10,7 +10,7 @@ class CambridgeSpider(scrapy.Spider):
     custom_settings = {
         'LOG_LEVEL': 'INFO',
         'DOWNLOADER_MIDDLEWARES': {
-            'UBW.middlewares.V2rayNMiddleware': 543
+            'UBW.middlewares.VPNMiddleware': 543
         },
         'CONCURRENT_REQUESTS': 16,
         'ITEM_PIPELINES': {

@@ -11,7 +11,7 @@ class YahooSpider(scrapy.Spider):
     custom_settings = {
         'CONCURRENT_REQUESTS': 4,
         'DOWNLOADER_MIDDLEWARES': {
-            'UBW.middlewares.V2rayNMiddleware': 543,
+            'UBW.middlewares.VPNMiddleware': 543,
             'UBW.middlewares.PauseMiddleware': 600,
         },
         'ITEM_PIPELINES': {
